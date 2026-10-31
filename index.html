@@ -80,7 +80,6 @@
       var helpSteps = document.getElementById('helpSteps');
       var openFallback = document.getElementById('openFallback');
       var helpOpen = document.getElementById('helpOpen');
-      frame.src = APP_URL;
       openFallback.href = APP_URL;
       helpOpen.href = APP_URL;
 
@@ -98,6 +97,7 @@
       window.addEventListener('resize', fitFrame);
       window.addEventListener('orientationchange', function(){ setTimeout(fitFrame, 300); });
       if(window.visualViewport){ window.visualViewport.addEventListener('resize', fitFrame); }
+      frame.src = APP_URL;
 
       var deferred = null;
       var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
