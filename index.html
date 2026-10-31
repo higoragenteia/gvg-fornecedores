@@ -14,62 +14,79 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32-v2.png">
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon-v2.png">
   <style>
-    :root{color-scheme:dark;--gold:#c8a24a;--gold2:#e8cd86;--ink:#0b0b0b;--navy:#0b2239}
+    :root{color-scheme:dark;--gold:#c8a24a;--gold2:#e8cd86;--navy:#0b2239;--ink:#111}
     *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;background:radial-gradient(900px 600px at 50% 0%,#173a50 0%,#0b2239 44%,#05080c 100%);color:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
-    body{display:grid;place-items:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
-    .card{width:min(100%,460px);text-align:center;background:linear-gradient(180deg,rgba(14,28,43,.82),rgba(5,12,20,.92));border:1px solid rgba(232,205,134,.38);border-radius:30px;padding:28px 24px;box-shadow:0 30px 90px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(18px)}
-    .logo{width:150px;height:150px;object-fit:cover;border-radius:32px;border:1px solid rgba(232,205,134,.55);box-shadow:0 22px 45px rgba(0,0,0,.5),0 0 0 6px rgba(200,162,74,.06);background:#111}
-    .eyebrow{margin:20px 0 4px;color:var(--gold2);font-size:9px;font-weight:900;letter-spacing:3.5px}
-    h1{font-size:25px;line-height:1.12;letter-spacing:-.8px;margin:0}
-    h1 span{color:var(--gold2)}
-    .sub{margin:8px auto 0;max-width:350px;color:#b8cbd8;font-size:12px;line-height:1.55}
-    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:14px;padding:16px 18px;margin-top:20px;background:linear-gradient(180deg,#f0d99b,#c8a24a);color:#1b1405;font-weight:950;font-size:14px;text-decoration:none;box-shadow:0 14px 30px rgba(200,162,74,.22);cursor:pointer}
-    .btn.secondary{background:rgba(255,255,255,.06);color:#dce8ef;border:1px solid rgba(255,255,255,.14);box-shadow:none;font-weight:800;font-size:12px;padding:12px}
-    .btn:active{transform:scale(.99)}
-    .steps{margin-top:16px;text-align:left;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11);border-radius:15px;padding:14px 15px;color:#d3e1ea;font-size:11px;line-height:1.65}
-    .steps b{display:block;color:#fff;font-size:11px;margin-bottom:6px}
-    .steps span{display:block;margin:4px 0}
-    .note{margin:14px 0 0;color:#8da3b2;font-size:10px;line-height:1.5}
-    .gold{color:var(--gold2);font-weight:800}
-    .hidden{display:none!important}
-    @media(max-width:380px){.card{padding:22px 16px}.logo{width:128px;height:128px}h1{font-size:21px}}
+    html,body{margin:0;height:100%;background:#eef3f7;overflow:hidden;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+    #frameWrap{position:fixed;inset:0;overflow:hidden;background:#eef3f7}
+    #appFrame{position:absolute;left:0;top:-41px;width:100%;height:calc(100% + 41px);border:0;background:#eef3f7;display:block}
+    .install-btn{
+      position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:2147483647;
+      border:1px solid rgba(232,205,134,.75);border-radius:999px;background:linear-gradient(180deg,#f0d99b,#c8a24a);
+      color:#201807;font-weight:950;font-size:11px;padding:10px 13px;display:flex;align-items:center;gap:6px;
+      box-shadow:0 10px 28px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.45);cursor:pointer;
+    }
+    .install-btn.hidden{display:none!important}
+    .open-fallback{
+      position:fixed;left:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:2147483646;
+      background:rgba(11,34,57,.72);color:#dce8ef;border:1px solid rgba(255,255,255,.18);
+      border-radius:999px;padding:8px 10px;font-size:9px;font-weight:800;text-decoration:none;
+      backdrop-filter:blur(8px);opacity:.72;
+    }
+    .modal{position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.62);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+    .modal.hidden{display:none}
+    .sheet{width:min(560px,100%);background:#fff;color:#17232d;border-radius:22px;padding:22px 20px calc(20px + env(safe-area-inset-bottom));box-shadow:0 30px 80px rgba(0,0,0,.4);animation:up .2s ease}
+    @keyframes up{from{transform:translateY(14px);opacity:.5}to{transform:none;opacity:1}}
+    .sheet h2{margin:0 0 6px;font-size:18px;letter-spacing:-.4px}
+    .sheet p{margin:0 0 14px;color:#607382;font-size:12px;line-height:1.5}
+    .steps{display:flex;flex-direction:column;gap:10px;margin:14px 0 16px}
+    .step{display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.45;color:#33495a}
+    .step b{width:24px;height:24px;flex:0 0 24px;border-radius:50%;background:#eef4f8;color:#0b2239;display:grid;place-items:center;font-size:11px}
+    .sheet-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+    .btn{border:1px solid #d7e2ea;background:#fff;color:#0b2239;border-radius:11px;padding:10px 13px;font-weight:800;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+    .btn.primary{background:#0b2239;border-color:#0b2239;color:#fff}
+    .note{background:#f4f8fb;border:1px solid #dce8ef;border-radius:11px;padding:10px 12px;color:#4c6474;font-size:11px;line-height:1.5}
+    @media(min-width:720px){.modal{align-items:center}.sheet{padding:26px 28px}}
+    @media(max-width:420px){.install-btn{font-size:10px;padding:9px 11px}.open-fallback{font-size:8px}}
   </style>
 </head>
 <body>
-  <main class="card">
-    <img class="logo" src="./icons/icon-192-v2.png" alt="GVG &amp; ARTEFAL — App de Fornecedores">
-    <div class="eyebrow">GESTÃO • COMPRAS • COTAÇÕES</div>
-    <h1>GVG <span>&amp;</span> ARTEFAL<br>APP DE FORNECEDORES</h1>
-    <p class="sub">Fornecedores, produtos, cotações, comparação de preços, compras e histórico em um só aplicativo.</p>
+  <div id="frameWrap">
+    <iframe id="appFrame" title="GVG & ARTEFAL — App de Fornecedores" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
 
-    <button id="installBtn" class="btn" type="button">📲 Instalar aplicativo</button>
-    <a id="openApp" class="btn secondary" href="#" target="_blank" rel="noopener">Abrir app de fornecedores</a>
+  <a id="openFallback" class="open-fallback" href="#" target="_blank" rel="noopener">Abrir no navegador</a>
+  <button id="installBtn" class="install-btn" type="button">📲 Instalar</button>
 
-    <div id="installSteps" class="steps">
-      <b>Como instalar no celular</b>
-      <span><span class="gold">Android:</span> abra este link no Chrome e toque em <b>⋮ → Instalar aplicativo</b> ou <b>Adicionar à tela inicial</b>.</span>
-      <span><span class="gold">iPhone:</span> abra no Safari, toque em <b>Compartilhar → Adicionar à Tela de Início</b>.</span>
-      <span>Depois é só abrir pelo ícone <b>FORNECEDORES</b> na tela inicial.</span>
+  <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="sheet">
+      <h2 id="helpTitle">Instalar o GVG &amp; ARTEFAL</h2>
+      <p>O app abre em tela cheia. O PWA não baixa APK/IPA: o navegador instala o atalho/aplicativo.</p>
+      <div id="helpSteps" class="steps"></div>
+      <div class="note">O sistema continua conectado ao Google Sheets e Apps Script.</div>
+      <div class="sheet-actions" style="margin-top:16px">
+        <a class="btn" id="helpOpen" href="#" target="_blank" rel="noopener">Abrir em nova aba</a>
+        <button class="btn primary" type="button" onclick="closeHelp()">Entendi</button>
+      </div>
     </div>
-
-    <p class="note">O PWA não baixa um arquivo APK/IPA. O navegador instala o atalho/aplicativo. O sistema continua conectado ao Google Sheets e Apps Script.</p>
-  </main>
+  </div>
 
   <script>
     (function(){
       'use strict';
       var APP_URL = 'https://script.google.com/macros/s/AKfycbwhkn_lMcBmsbzyJBW-0uXPZn24E88XPyOYpAn0EdZzgMGhamPkCYCSQX32NHjvVoPa/exec';
+      var frame = document.getElementById('appFrame');
       var installBtn = document.getElementById('installBtn');
-      var openApp = document.getElementById('openApp');
-      var steps = document.getElementById('installSteps');
-      openApp.href = APP_URL;
+      var helpModal = document.getElementById('helpModal');
+      var helpSteps = document.getElementById('helpSteps');
+      var openFallback = document.getElementById('openFallback');
+      var helpOpen = document.getElementById('helpOpen');
+      frame.src = APP_URL;
+      openFallback.href = APP_URL;
+      helpOpen.href = APP_URL;
 
       var deferred = null;
-      var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-      if (standalone) {
-        window.location.replace(APP_URL);
-      }
+      var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+      if (standalone) installBtn.classList.add('hidden');
 
       window.addEventListener('beforeinstallprompt', function(e){
         e.preventDefault();
@@ -77,24 +94,38 @@
       });
       window.addEventListener('appinstalled', function(){
         deferred = null;
-        installBtn.textContent = '✅ Aplicativo instalado';
-        installBtn.disabled = true;
+        installBtn.classList.add('hidden');
       });
 
-      installBtn.addEventListener('click', function(){
-        if (deferred) {
+      function isIOS(){
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      }
+      function showHelp(){
+        var ios = isIOS();
+        var android = /Android/i.test(navigator.userAgent);
+        helpSteps.innerHTML = ios
+          ? '<div class="step"><b>1</b><span>Abra esta página no <b>Safari</b>.</span></div><div class="step"><b>2</b><span>Toque em <b>Compartilhar</b>.</span></div><div class="step"><b>3</b><span>Escolha <b>Adicionar à Tela de Início</b>.</span></div><div class="step"><b>4</b><span>Confirme <b>FORNECEDORES</b>.</span></div>'
+          : android
+            ? '<div class="step"><b>1</b><span>Abra esta página no <b>Chrome</b>.</span></div><div class="step"><b>2</b><span>Toque em <b>⋮</b> no canto superior direito.</span></div><div class="step"><b>3</b><span>Escolha <b>Instalar aplicativo</b> ou <b>Adicionar à tela inicial</b>.</span></div><div class="step"><b>4</b><span>Confirme em <b>Instalar</b>.</span></div>'
+            : '<div class="step"><b>1</b><span>No Chrome/Edge, use o ícone de instalação na barra de endereço ou <b>⋮ → Instalar aplicativo</b>.</span></div><div class="step"><b>2</b><span>No celular, abra esta página no Chrome ou Safari e use a opção de adicionar à tela inicial.</span></div>';
+        helpModal.classList.remove('hidden');
+      }
+      window.closeHelp = function(){ helpModal.classList.add('hidden'); };
+      installBtn.addEventListener('click', async function(){
+        if(deferred){
           deferred.prompt();
-          deferred.userChoice.then(function(){
-            deferred = null;
-          }).catch(function(){});
+          try { await deferred.userChoice; } catch(e) {}
+          deferred = null;
+          installBtn.classList.add('hidden');
           return;
         }
-        steps.scrollIntoView({behavior:'smooth', block:'center'});
-        installBtn.textContent = '📲 Siga as instruções abaixo';
+        showHelp();
       });
 
-      if ('serviceWorker' in navigator && location.protocol === 'https:') {
-        navigator.serviceWorker.register('./sw.js').catch(function(){});
+      if('serviceWorker' in navigator && location.protocol === 'https:'){
+        window.addEventListener('load', function(){
+          navigator.serviceWorker.register('./sw.js').catch(function(){});
+        });
       }
     })();
   </script>
