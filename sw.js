@@ -1,5 +1,5 @@
 /* GVG & ARTEFAL — PWA shell service worker */
-const CACHE = 'gvg-artefal-pwa-v8';
+const CACHE = 'gvg-artefal-pwa-v9';
 const SHELL = [
   './',
   './index.html',
