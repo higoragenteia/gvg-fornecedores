@@ -83,6 +83,11 @@
       openFallback.href = APP_URL;
       helpOpen.href = APP_URL;
 
+      // No iPhone/iPad o Safari não renderiza o Apps Script no iframe com o layout correto.
+      // Abre o app direto no Google, onde a tela fica normal (com a faixa do Google).
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isIOS) { window.location.replace(APP_URL); return; }
+
       // iOS Safari dimensiona iframes com viewport próprio; fixar em pixels evita a tela "passando".
       function fitFrame(){
         var vv = window.visualViewport;
