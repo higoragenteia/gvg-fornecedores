@@ -4,166 +4,97 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#111111">
-  <meta name="description" content="GVG & ARTEFAL — aplicativo de controle de fornecedores, compras, cotações e preços.">
+  <meta name="description" content="GVG & ARTEFAL — App de Fornecedores: fornecedores, produtos, cotações, preços e compras.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="FORNECEDORES">
-  <title>GVG & ARTEFAL — APP DE FORNECEDORES</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icons/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <title>GVG &amp; ARTEFAL — APP DE FORNECEDORES</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
   <style>
-    :root{color-scheme:dark;--gold:#c8a24a;--gold2:#e8cd86;--navy:#0b2239;--ink:#111111}
+    :root{color-scheme:dark;--gold:#c8a24a;--gold2:#e8cd86;--ink:#0b0b0b;--navy:#0b2239}
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
-    #appFrame{position:fixed;left:0;right:0;top:calc(44px + env(safe-area-inset-top));bottom:0;width:100%;height:calc(100% - 44px - env(safe-area-inset-top));border:0;background:#eef3f7;display:block}
-    .pwa-bar{position:fixed;top:0;left:0;right:0;height:calc(44px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 12px 0;z-index:2147483647;background:linear-gradient(90deg,#071726,#0b2239 60%,#12324d);color:#fff;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,162,74,.35);box-shadow:0 4px 18px rgba(0,0,0,.22)}
-    .pwa-brand{font-size:12px;font-weight:950;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .pwa-brand span{color:var(--gold2)}
-    .pwa-brand small{font-size:8px;letter-spacing:1.6px;color:#b9cbd8;font-weight:700;margin-left:7px}
-    .pwa-actions{display:flex;align-items:center;gap:7px}.pwa-open{border:1px solid rgba(255,255,255,.22);border-radius:999px;color:#dce8ef;text-decoration:none;font-weight:800;font-size:10px;padding:7px 10px;white-space:nowrap}.pwa-open:hover{background:rgba(255,255,255,.08)}.pwa-install{border:1px solid rgba(232,205,134,.75);border-radius:999px;background:linear-gradient(180deg,#f0d99b,#c8a24a);color:#201807;font-weight:950;font-size:11px;padding:8px 12px;white-space:nowrap;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25)}
-    .pwa-install:active{transform:scale(.98)}
-    #splash{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:radial-gradient(700px 500px at 50% 30%,#173a50 0%,#0b2239 45%,#050b11 100%);transition:opacity .45s ease,visibility .45s ease}
-    #splash.hide{opacity:0;visibility:hidden}
-    .splash-card{text-align:center;color:#fff;padding:24px}
-    .splash-logo{font-size:46px;font-weight:950;letter-spacing:-2.5px;line-height:1;text-shadow:0 10px 35px rgba(200,162,74,.28)}
-    .splash-logo span{color:var(--gold2)}
-    .splash-sub{font-size:9px;letter-spacing:4px;color:#b9cbd8;margin-top:8px;text-transform:uppercase}
-    .splash-line{width:74px;height:3px;border-radius:99px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px auto}
-    .splash-text{font-size:12px;color:#d8e5ee;font-weight:700}
-    .splash-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:6px;animation:pulse 1.2s infinite}
-    @keyframes pulse{50%{opacity:.3;transform:scale(.7)}}
-    .install-btn{
-      position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:2147483647;
-      border:1px solid rgba(232,205,134,.7);border-radius:999px;
-      background:linear-gradient(180deg,#f0d99b,#c8a24a);color:#201807;
-      font-weight:950;font-size:12px;padding:11px 15px;display:flex;align-items:center;gap:7px;
-      box-shadow:0 14px 35px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.45);
-      cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;
-    }
-    .install-btn:hover{transform:translateY(-1px);box-shadow:0 18px 42px rgba(0,0,0,.42)}
-    .install-btn:active{transform:scale(.98)}
-    .install-btn.hidden{display:none}
-    .modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;padding:16px}
-    .modal.hidden{display:none}
-    .sheet{width:min(560px,100%);background:#fff;color:#17232d;border-radius:22px;padding:22px 20px calc(20px + env(safe-area-inset-bottom));box-shadow:0 30px 80px rgba(0,0,0,.4);animation:up .2s ease}
-    @keyframes up{from{transform:translateY(14px);opacity:.5}to{transform:none;opacity:1}}
-    .sheet h2{margin:0 0 6px;font-size:18px;letter-spacing:-.4px}
-    .sheet p{margin:0 0 14px;color:#607382;font-size:12px;line-height:1.5}
-    .steps{display:flex;flex-direction:column;gap:10px;margin:14px 0 16px}
-    .step{display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.45;color:#33495a}
-    .step b{width:24px;height:24px;flex:0 0 24px;border-radius:50%;background:#eef4f8;color:#0b2239;display:grid;place-items:center;font-size:11px}
-    .sheet-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
-    .btn{border:1px solid #d7e2ea;background:#fff;color:#0b2239;border-radius:11px;padding:10px 13px;font-weight:800;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
-    .btn.primary{background:#0b2239;border-color:#0b2239;color:#fff}
-    .btn.gold{background:linear-gradient(180deg,#f0d99b,#c8a24a);border-color:#c8a24a;color:#201807}
-    .note{background:#f4f8fb;border:1px solid #dce8ef;border-radius:11px;padding:10px 12px;color:#4c6474;font-size:11px;line-height:1.5}
-    @media(min-width:720px){.modal{align-items:center}.sheet{padding:26px 28px}}
-    @media(max-width:600px){.pwa-brand{font-size:11px}.pwa-brand small{display:none}.pwa-actions{gap:5px}.pwa-open{font-size:9px;padding:6px 8px}.pwa-install{font-size:10px;padding:7px 9px}}
+    html,body{margin:0;min-height:100%;background:radial-gradient(900px 600px at 50% 0%,#173a50 0%,#0b2239 44%,#05080c 100%);color:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+    body{display:grid;place-items:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
+    .card{width:min(100%,460px);text-align:center;background:linear-gradient(180deg,rgba(14,28,43,.82),rgba(5,12,20,.92));border:1px solid rgba(232,205,134,.38);border-radius:30px;padding:28px 24px;box-shadow:0 30px 90px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(18px)}
+    .logo{width:150px;height:150px;object-fit:cover;border-radius:32px;border:1px solid rgba(232,205,134,.55);box-shadow:0 22px 45px rgba(0,0,0,.5),0 0 0 6px rgba(200,162,74,.06);background:#111}
+    .eyebrow{margin:20px 0 4px;color:var(--gold2);font-size:9px;font-weight:900;letter-spacing:3.5px}
+    h1{font-size:25px;line-height:1.12;letter-spacing:-.8px;margin:0}
+    h1 span{color:var(--gold2)}
+    .sub{margin:8px auto 0;max-width:350px;color:#b8cbd8;font-size:12px;line-height:1.55}
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:14px;padding:16px 18px;margin-top:20px;background:linear-gradient(180deg,#f0d99b,#c8a24a);color:#1b1405;font-weight:950;font-size:14px;text-decoration:none;box-shadow:0 14px 30px rgba(200,162,74,.22);cursor:pointer}
+    .btn.secondary{background:rgba(255,255,255,.06);color:#dce8ef;border:1px solid rgba(255,255,255,.14);box-shadow:none;font-weight:800;font-size:12px;padding:12px}
+    .btn:active{transform:scale(.99)}
+    .steps{margin-top:16px;text-align:left;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11);border-radius:15px;padding:14px 15px;color:#d3e1ea;font-size:11px;line-height:1.65}
+    .steps b{display:block;color:#fff;font-size:11px;margin-bottom:6px}
+    .steps span{display:block;margin:4px 0}
+    .note{margin:14px 0 0;color:#8da3b2;font-size:10px;line-height:1.5}
+    .gold{color:var(--gold2);font-weight:800}
+    .hidden{display:none!important}
+    @media(max-width:380px){.card{padding:22px 16px}.logo{width:128px;height:128px}h1{font-size:21px}}
   </style>
 </head>
 <body>
-  <div id="splash">
-    <div class="splash-card">
-      <div class="splash-logo">GVG<span>&amp;</span>ARTEFAL</div>
-      <div class="splash-sub">Esquadrias &amp; Soluções</div>
-      <div class="splash-line"></div>
-      <div class="splash-text"><span class="splash-dot"></span>APP DE FORNECEDORES</div>
+  <main class="card">
+    <img class="logo" src="./icons/icon-192.png" alt="GVG &amp; ARTEFAL — App de Fornecedores">
+    <div class="eyebrow">GESTÃO • COMPRAS • COTAÇÕES</div>
+    <h1>GVG <span>&amp;</span> ARTEFAL<br>APP DE FORNECEDORES</h1>
+    <p class="sub">Fornecedores, produtos, cotações, comparação de preços, compras e histórico em um só aplicativo.</p>
+
+    <button id="installBtn" class="btn" type="button">📲 Instalar aplicativo</button>
+    <a id="openApp" class="btn secondary" href="#" target="_blank" rel="noopener">Abrir app de fornecedores</a>
+
+    <div id="installSteps" class="steps">
+      <b>Como instalar no celular</b>
+      <span><span class="gold">Android:</span> abra este link no Chrome e toque em <b>⋮ → Instalar aplicativo</b> ou <b>Adicionar à tela inicial</b>.</span>
+      <span><span class="gold">iPhone:</span> abra no Safari, toque em <b>Compartilhar → Adicionar à Tela de Início</b>.</span>
+      <span>Depois é só abrir pelo ícone <b>FORNECEDORES</b> na tela inicial.</span>
     </div>
-  </div>
 
-  <div class="pwa-bar"><div class="pwa-brand">GVG <span>&amp;</span> ARTEFAL <small>APP DE FORNECEDORES</small></div><div class="pwa-actions"><button id="installBtn" class="pwa-install" type="button" aria-label="Instalar aplicativo">📲 Instalar</button></div></div>
-
-  <iframe id="appFrame" title="GVG & ARTEFAL — App de Fornecedores" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-
-  <div id="helpModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
-    <div class="sheet">
-      <h2 id="helpTitle">Instalar o GVG &amp; ARTEFAL</h2>
-      <p>O app abre em tela cheia. O PWA não baixa um arquivo APK/IPA: o próprio navegador instala o atalho/aplicativo.</p>
-      <div id="helpSteps" class="steps"></div>
-      <div class="note">O sistema continua usando Google Sheets e Apps Script. É necessário estar conectado à internet e com a conta Google autorizada.</div>
-      <div class="sheet-actions" style="margin-top:16px">
-        <a class="btn" id="openDirect" href="#" target="_blank" rel="noopener">Abrir em nova aba</a>
-        <button class="btn primary" type="button" onclick="closeHelp()">Entendi</button>
-      </div>
-    </div>
-  </div>
+    <p class="note">O PWA não baixa um arquivo APK/IPA. O navegador instala o atalho/aplicativo. O sistema continua conectado ao Google Sheets e Apps Script.</p>
+  </main>
 
   <script>
     (function(){
       'use strict';
-      const APP_URL = 'https://script.google.com/macros/s/AKfycbwhkn_lMcBmsbzyJBW-0uXPZn24E88XPyOYpAn0EdZzgMGhamPkCYCSQX32NHjvVoPa/exec';
-      const params = new URLSearchParams(location.search);
-      const view = params.get('view');
-      const frame = document.getElementById('appFrame');
-      const splash = document.getElementById('splash');
-      const installBtn = document.getElementById('installBtn');
-      const helpModal = document.getElementById('helpModal');
-      const helpSteps = document.getElementById('helpSteps');
-      const openDirect = document.getElementById('openDirect');
-      const appHref = APP_URL + (view ? '?view=' + encodeURIComponent(view) : '');
-      const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-      if (standalone) installBtn.classList.add('hidden');
-      frame.src = appHref;
-      openDirect.href = appHref;
+      var APP_URL = 'https://script.google.com/macros/s/AKfycbwhkn_lMcBmsbzyJBW-0uXPZn24E88XPyOYpAn0EdZzgMGhamPkCYCSQX32NHjvVoPa/exec';
+      var installBtn = document.getElementById('installBtn');
+      var openApp = document.getElementById('openApp');
+      var steps = document.getElementById('installSteps');
+      openApp.href = APP_URL;
 
-      frame.addEventListener('load', function(){
-        setTimeout(function(){ splash.classList.add('hide'); }, 350);
-      });
-      setTimeout(function(){ splash.classList.add('hide'); }, 3500);
-
-      let deferredPrompt = null;
+      var deferred = null;
+      var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      if (standalone) {
+        window.location.replace(APP_URL);
+      }
 
       window.addEventListener('beforeinstallprompt', function(e){
         e.preventDefault();
-        deferredPrompt = e;
-        installBtn.classList.remove('hidden');
+        deferred = e;
       });
       window.addEventListener('appinstalled', function(){
-        deferredPrompt = null;
-        installBtn.classList.add('hidden');
+        deferred = null;
+        installBtn.textContent = '✅ Aplicativo instalado';
+        installBtn.disabled = true;
       });
 
-      function isIOS(){
-        return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      }
-      function showHelp(){
-        const ios = isIOS();
-        const android = /Android/i.test(navigator.userAgent);
-        helpSteps.innerHTML = ios
-          ? '<div class="step"><b>1</b><span>Abra esta página no <b>Safari</b>.</span></div>' +
-            '<div class="step"><b>2</b><span>Toque no botão <b>Compartilhar</b> (quadrado com seta).</span></div>' +
-            '<div class="step"><b>3</b><span>Escolha <b>Adicionar à Tela de Início</b>.</span></div>' +
-            '<div class="step"><b>4</b><span>Confirme o nome <b>GVG &amp; ARTEFAL</b> e toque em <b>Adicionar</b>.</span></div>'
-          : android
-            ? '<div class="step"><b>1</b><span>Abra esta página no <b>Chrome</b>.</span></div>' +
-              '<div class="step"><b>2</b><span>Toque no menu <b>⋮</b> no canto superior direito.</span></div>' +
-              '<div class="step"><b>3</b><span>Escolha <b>Instalar aplicativo</b> ou <b>Adicionar à tela inicial</b>.</span></div>' +
-              '<div class="step"><b>4</b><span>Confirme em <b>Instalar</b>.</span></div>'
-            : '<div class="step"><b>1</b><span>No Chrome/Edge, use o ícone de instalação na barra de endereço ou o menu <b>⋮ → Instalar aplicativo</b>.</span></div>' +
-              '<div class="step"><b>2</b><span>Se preferir, abra o link em nova aba e use <b>Adicionar à tela inicial</b> no celular.</span></div>';
-        helpModal.classList.remove('hidden');
-      }
-      window.closeHelp = function(){ helpModal.classList.add('hidden'); };
-
-      const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      installBtn.textContent = isIOSDevice ? '📲 Como instalar' : '📲 Instalar';
-      installBtn.addEventListener('click', async function(){
-        if(deferredPrompt){
-          deferredPrompt.prompt();
-          try { await deferredPrompt.userChoice; } catch(e) {}
-          deferredPrompt = null;
-          installBtn.classList.add('hidden');
+      installBtn.addEventListener('click', function(){
+        if (deferred) {
+          deferred.prompt();
+          deferred.userChoice.then(function(){
+            deferred = null;
+          }).catch(function(){});
           return;
         }
-        showHelp();
+        steps.scrollIntoView({behavior:'smooth', block:'center'});
+        installBtn.textContent = '📲 Siga as instruções abaixo';
       });
 
-      if('serviceWorker' in navigator){
-        window.addEventListener('load', function(){
-          navigator.serviceWorker.register('./sw.js').catch(function(){});
-        });
+      if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        navigator.serviceWorker.register('./sw.js').catch(function(){});
       }
     })();
   </script>

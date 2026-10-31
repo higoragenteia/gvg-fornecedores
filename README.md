@@ -6,13 +6,11 @@ O backend, Google Sheets, permissões e o dashboard atual **não foram reescrito
 ## Arquitetura
 
 ```
-GitHub Pages (PWA shell: manifest + service worker + ícones)
-        └── iframe → Google Apps Script /exec (sistema real)
+GitHub Pages (PWA de atalho: manifest + service worker + ícones)
+        └── botão → Google Apps Script /exec (sistema real)
 ```
 
-O Apps Script foi configurado com `XFrameOptionsMode.ALLOWALL` para permitir a incorporação.
-O service worker faz cache apenas do shell (HTML, manifest, ícones). O sistema dentro do iframe
-continua exigindo internet e conta Google autorizada.
+O service worker faz cache apenas da página de atalho, manifest e ícones. O sistema continua no Google Apps Script e exige internet e conta Google autorizada.
 
 ## Arquivos
 
@@ -47,7 +45,7 @@ Também é possível adicionar diretamente a URL `/exec` do Apps Script à Tela 
 
 ## Atualizações
 
-O service worker usa `CACHE = 'gvg-artefal-pwa-v2'`. Ao publicar uma nova versão do shell,
+O service worker usa `CACHE = 'gvg-artefal-pwa-v3'`. Ao publicar uma nova versão do shell,
 incremente esse valor para invalidar o cache antigo. O conteúdo do Apps Script é atualizado
 pelo próprio Apps Script; os funcionários não precisam reinstalar o PWA.
 
