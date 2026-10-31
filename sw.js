@@ -1,15 +1,15 @@
 /* GVG & ARTEFAL — PWA shell service worker */
-const CACHE = 'gvg-artefal-pwa-v3';
+const CACHE = 'gvg-artefal-pwa-v4';
 const SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './icons/favicon.ico',
-  './icons/favicon-32.png',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-512.png',
-  './icons/apple-touch-icon.png'
+  './icons/favicon-v2.ico',
+  './icons/favicon-32-v2.png',
+  './icons/icon-192-v2.png',
+  './icons/icon-512-v2.png',
+  './icons/icon-maskable-512-v2.png',
+  './icons/apple-touch-icon-v2.png'
 ];
 
 self.addEventListener('install', event => {
