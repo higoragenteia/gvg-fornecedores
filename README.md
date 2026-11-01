@@ -47,13 +47,19 @@ Abra a URL do GitHub Pages no Chrome e use **📲 Instalar** no canto inferior d
 ### iPhone
 
 No Safari, abra a URL do GitHub Pages e use **Compartilhar → Adicionar à Tela de Início**.
+O atalho permanece no GitHub Pages e abre o Apps Script no iframe, sem a faixa azul do Google.
+Não há redirecionamento automático para `script.google.com`.
+
+Se o atalho antigo ainda mostrar o ícone anterior, apague-o da Tela de Início e adicione de novo,
+pois o iOS mantém o ícone em cache. Os arquivos `*-v3.png` foram versionados para forçar a troca.
 
 > No iOS, o Safari pode bloquear cookies de terceiros dentro do iframe. Se o login não
-> funcionar, use o link **Problemas para abrir? Toque aqui** no canto inferior esquerdo.
+> funcionar, use o link **Problemas para abrir? Toque aqui**, que só aparece após 15 segundos
+> sem carregamento.
 
 ## Atualizações
 
-O service worker usa `CACHE = 'gvg-artefal-pwa-v5'`. Ao publicar uma nova versão do shell,
+O service worker usa `CACHE = 'gvg-artefal-pwa-v11'`. Ao publicar uma nova versão do shell,
 incremente esse valor para invalidar o cache antigo. O conteúdo do Apps Script é atualizado
 pelo próprio Apps Script; os funcionários não precisam reinstalar o PWA.
 
@@ -64,12 +70,12 @@ carregamento, mesmo sem trocar a versão do cache.
 
 Os ícones foram gerados a partir da arte oficial `Emblema Metálico GVG&ARTEFAL.png`:
 
-- `icons/icon-192-v2.png`
-- `icons/icon-512-v2.png`
-- `icons/icon-maskable-512-v2.png`
-- `icons/apple-touch-icon-v2.png`
-- `icons/favicon-32-v2.png`
-- `icons/favicon-v2.ico`
+- `icons/icon-192-v3.png`
+- `icons/icon-512-v3.png`
+- `icons/icon-maskable-512-v3.png`
+- `icons/apple-touch-icon-v3.png`
+- `icons/favicon-32-v3.png`
+- `icons/favicon-v3.ico`
 
-Os nomes terminam em `-v2` para forçar a atualização do ícone em navegadores que já
+Os nomes terminam em `-v3` para forçar a atualização do ícone em navegadores que já
 tinham o PWA instalado. O maskable foi criado com margem de segurança sobre fundo escuro.
